@@ -1,0 +1,4 @@
+data_ingestion:
+  bucket_name= "myfirstmlprojrct"
+  bucket_file_name="hotel reservation.csv"
+  train_ratio=0.80
