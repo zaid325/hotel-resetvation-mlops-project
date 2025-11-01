@@ -1,0 +1,1 @@
+ x=df.drop(columns="booking_status")
