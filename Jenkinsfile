@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         VENV_DIR = "myenv"
+        GCP_PROJECT='snappy-striker-475921-q4'
+        GCLOUD='/var/jenkins_home/google-cloud-sdk/bin'
     }
 
     stages {
@@ -35,6 +37,30 @@ pipeline {
                         pip install -e .
                     '''
                 }
+            }
+        }
+         stage('building and pushing docker image to gcr') {
+            steps {
+               withCredentials([file(credentialsId : 'gcp-key' , variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
+                script{
+                    echo 'building and pushing docker image to gcr'
+                    sh'''
+                    export PATH=$PATH:$(GCLOUD_PATH)
+
+                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+
+                    gcloud config set project ${GCP_PROJECT}
+
+                    gcloud auth configure-docker --quite
+
+                    docker build -t gcr.io/${GCP_PROJECT}/ml-project:latest .
+
+                    docker pusht gcr.io/${GCP_PROJECT}/ml-project:latest
+
+                    
+                    '''
+                }
+               }
             }
         }
     }
