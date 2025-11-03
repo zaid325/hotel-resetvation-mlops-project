@@ -1,4 +1,4 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: MLOPs-Project-1-hotesl-reservation-prediction
 Version: 0.1
 Requires-Dist: pandas
@@ -9,4 +9,3 @@ Requires-Dist: pyyaml
 Requires-Dist: imbalanced-learn
 Requires-Dist: lightgbm
 Requires-Dist: mlflow
-Dynamic: requires-dist
