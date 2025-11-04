@@ -25,18 +25,11 @@ pipeline {
             }
         }
 
-        stage('Setup Python Environment') {
+        stage('Verify Python Environment') {
             steps {
                 script {
-                    echo '⚙️ Ensuring Python and pip are installed...'
+                    echo '⚙️ Checking Python and pip versions...'
                     sh '''
-                        if ! command -v python3 &> /dev/null
-                        then
-                            echo "Python3 not found. Installing..."
-                            apt-get update -y
-                            apt-get install -y python3 python3-pip python3-venv
-                            ln -sf /usr/bin/python3 /usr/bin/python
-                        fi
                         python --version
                         pip --version
                     '''
