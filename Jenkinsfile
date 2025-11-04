@@ -4,7 +4,7 @@ pipeline {
     environment {
         VENV_DIR = "myenv"
         GCP_PROJECT = "snappy-striker-475921-q4"
-        GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
+        GCLOUD_PATH = "/usr/local/bin/gcloud"
     }
 
     stages {
