@@ -28,7 +28,7 @@ class DataIngestion:
 
     def download_csv_from_gcp(self):
         try:
-            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\PC\mlops first project\config\snappy-striker-475921-q4-a9df55b5c9c5.json"
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\PC\Downloads\snappy-striker-475921-q4-540c3909215e.json"
 
             print("🚀 Starting GCP download...")
             print(f"Bucket name: {self.bucket_name}")
