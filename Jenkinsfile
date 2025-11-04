@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'  // ✅ Python preinstalled
-        }
-    }
+    agent any
 
     environment {
         VENV_DIR = "myenv"
@@ -25,6 +21,25 @@ pipeline {
                             url: 'https://github.com/zaid325/hotel-resetvation-mlops-project.git'
                         ]]
                     ])
+                }
+            }
+        }
+
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    echo '⚙️ Ensuring Python and pip are installed...'
+                    sh '''
+                        if ! command -v python3 &> /dev/null
+                        then
+                            echo "Python3 not found. Installing..."
+                            apt-get update -y
+                            apt-get install -y python3 python3-pip python3-venv
+                            ln -sf /usr/bin/python3 /usr/bin/python
+                        fi
+                        python --version
+                        pip --version
+                    '''
                 }
             }
         }
