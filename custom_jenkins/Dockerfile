@@ -1,32 +1,27 @@
-# Use the official Jenkins LTS image as base
-FROM jenkins/jenkins:lts
+# Use the official Python image
+FROM python:3.10-slim
 
-# Switch to root to install dependencies
-USER root
+# Set working directory
+WORKDIR /app
 
-# Install Docker Engine inside Jenkins container
+# Install system dependencies required for PyArrow, Pandas, and others
 RUN apt-get update -y && \
-    apt-get install -y ca-certificates curl gnupg lsb-release && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-    https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list && \
-    apt-get update -y && \
-    apt-get install -y docker-ce docker-ce-cli containerd.io && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        gcc \
+        g++ \
+        make \
+        curl \
+        git \
+        && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Add Jenkins user to the Docker group
-RUN groupadd -f docker && usermod -aG docker jenkins
+# Copy project files into the container
+COPY . /app
 
-# Create a Docker volume for DinD
-RUN mkdir -p /var/lib/docker
-VOLUME /var/lib/docker
+# Install Python dependencies
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -e .
 
-# Switch back to Jenkins user
-USER jenkins
-
-
-
-
-
-
+# Optional: run tests or training (you can comment this out)
+# CMD ["python", "train.py"]
