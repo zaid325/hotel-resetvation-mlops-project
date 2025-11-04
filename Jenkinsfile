@@ -19,7 +19,7 @@ pipeline {
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [],
                         userRemoteConfigs: [[
-                            credentialsId: 'token acess',  // ✅ ensure this matches your Jenkins credential ID
+                            credentialsId: 'token acess',
                             url: 'https://github.com/zaid325/hotel-resetvation-mlops-project.git'
                         ]]
                     ])
@@ -47,12 +47,10 @@ pipeline {
                     script {
                         echo '🚀 Building and pushing Docker image to Google Container Registry...'
                         sh '''
-                            export PATH=$PATH:${GCLOUD_PATH}
-
                             # Authenticate with GCP
-                            ${GCLOUD_PATH}/gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-                            ${GCLOUD_PATH}/gcloud config set project ${GCP_PROJECT}
-                            ${GCLOUD_PATH}/gcloud auth configure-docker --quiet
+                            ${GCLOUD_PATH} auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                            ${GCLOUD_PATH} config set project ${GCP_PROJECT}
+                            ${GCLOUD_PATH} auth configure-docker --quiet
 
                             # Build Docker image
                             docker build -t gcr.io/${GCP_PROJECT}/ml-project:latest .
